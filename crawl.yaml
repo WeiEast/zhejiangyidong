@@ -1,0 +1,92 @@
+defaultHttpHeaders:
+  userAgent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+  accept: application/json, text/javascript, */*; q=0.01
+  charset: utf-8
+
+requests:
+  -
+   name: call-record
+   url: http://service.zj.10086.cn/yw/detail/queryHisDetailBill.do?bid=&menuId=13009&listtype=1&month=${loop@year-month}
+   method: GET
+   headers:
+      Host: service.zj.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+
+  -
+   name: bill-info
+   url: http://service.zj.10086.cn/yw/bill/billDetail.do?menuId=13003&bid=BD399F39E69148CFE044001635842132&month=${loop@year-month}
+   method: GET
+   headers:
+      Host: service.zj.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+
+  -
+   name: star-info
+   url: http://www.zj.10086.cn/my/findUserInfos.do?AISSO_LOGIN=true
+   method: POST
+   headers:
+      Host: www.zj.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8      
+
+  -
+   name: now-fee
+   url: http://www.zj.10086.cn/my/queryAccountAndCostInfo.do?AISSO_LOGIN=true
+   method: POST
+   headers:
+      Host: www.zj.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+
+  -
+   name: personal-info
+   url: http://www.zj.10086.cn/my/queryKtbbinfoqry.do?AISSO_LOGIN=true
+   method: GET
+   headers:
+      Host: www.zj.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8  
+
+  -
+   name: pay-info
+   url: http://service.zj.10086.cn/inline/my/rechargeQuery.do?bid=${pay_info_bid}&mobileno=${pay_info_mobileno}&yearmonth=${loop@year-month}
+   method: GET
+   headers:
+      Host: service.zj.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8        
+
+
+
+expression:
+  loops:
+    -
+     id: year-month
+     resultType: date
+     step: 1
+     loopTimes: 6
+     initValue: now
+     format: MM-yyyy
+     unit: m
+    -
+     id: offset
+     resultType: int
+     step: 1
+     loopTimes: 6
+     initValue: 0
+     format: none
+     unit: 1

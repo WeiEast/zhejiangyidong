@@ -1,0 +1,212 @@
+defaultHttpHeaders:
+  userAgent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+  accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+  
+requests:
+  -
+   name: get-login-page
+   url: https://zj.ac.10086.cn/login
+   method: GET
+   headers:
+      Host: zj.ac.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8  
+   
+  -
+   name: verify-img-code
+   url: https://zj.ac.10086.cn/validImageCode?r_0.23228170808194792&imageCode=${code}
+   method: GET
+   headers:
+      Host: zj.ac.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8  
+   verifyCodeUrl:
+      name: load-img-code
+      url: https://zj.ac.10086.cn/common/image.jsp
+      method: GET
+      headers:
+        Host: zj.ac.10086.cn
+        Upgrade-Insecure-Requests: 1
+        Content-Type: application/x-www-form-urlencoded
+        User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8  
+      goal: FOR_IMG
+   expects:
+     -
+      type: contains
+      content: "1"
+   errors:
+     -
+      type: contains
+      content: "0"
+      note: 图形验证码错误,重新输入
+   
+  -
+   name: do-login1
+   url: https://zj.ac.10086.cn/Login
+   method: POST
+   headers:
+      Host: zj.ac.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8      
+   postBody: type=B&spid=${spid}&mobileNum=${EmobileNum}&validCode=${code}&servicePassword=${Epassword}
+   backStep: 1
+   expects:
+    -
+     type: contains
+     content: SAMLart
+   errors:
+    -
+     type: contains
+     content: This document you requested has moved temporarily
+     note: 账户或密码错误
+
+  -
+   name: do-login2
+   url: https://zj.ac.10086.cn/login/backPage.jsp
+   method: POST
+   headers:
+      Host: zj.ac.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8      
+   postBody: AppSessionId=NotExist&SAMLart=${SAMLart}&isEncodePassword=2&displayPic=1&isEncodeMobile=2=displayPics=${displayPics}
+
+  -
+   name: do-login3
+   url: http://www.zj.10086.cn/my/servlet/assertion
+   method: POST
+   headers:
+      Host: www.zj.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8    
+   postBody: RelayState=${RelayState}&SAMLart=${SAMLart}
+
+
+
+  -
+   name: get-pay-info-form
+   url: http://www.zj.10086.cn/my/login/zjehallLogin.do?urlFlag=7&AISSO_LOGIN=true
+   method: GET
+   headers:
+      Host: www.zj.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8 
+
+
+
+  -
+   name: get-bill-info-form
+   url: http://service.zj.10086.cn/yw/myBillAnalysis/myBillAnalysisQuery.do?menuId=13003
+   method: GET
+   headers:
+      Host: service.zj.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8    
+
+  -
+   name: bill-info-form-login1
+   url: https://zj.ac.10086.cn/POST
+   method: POST
+   headers:
+      Host: service.zj.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8  
+   postBody: RelayState=${RelayState}&SAMLRequest=${SAMLRequest}
+
+  -
+   name: bill-info-form-login2
+   url: http://service.zj.10086.cn/servlet/assertion
+   method: POST
+   headers:
+      Host: service.zj.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8  
+   postBody: AppSessionId=NotExist&SAMLart=${SAMLart}&isEncodePassword=2&displayPic=0&RelayState=${RelayState}&isEncodeMobile=2
+
+
+
+  -
+   name: get-call-detail-form
+   url: http://service.zj.10086.cn/yw/detail/queryHisDetailBill.do?menuId=13009
+   method: GET
+   headers:
+      Host: service.zj.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8    
+
+  -
+   name: call-detail-form-login1
+   url: https://zj.ac.10086.cn/POST
+   method: POST
+   headers:
+      Host: service.zj.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8 
+   postBody: RelayState=${RelayState}&SAMLRequest=${SAMLRequest}
+
+  -
+   name: call-detail-form-login2
+   url: http://service.zj.10086.cn/servlet/assertion
+   method: POST
+   headers:
+      Host: service.zj.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8 
+   postBody: AppSessionId=NotExist&SAMLart=${SAMLart}&isEncodePassword=2&displayPic=0&RelayState=${RelayState}&isEncodeMobile=2
+
+  -
+   name: verify-sms-code
+   url: http://service.zj.10086.cn/yw/detail/secondPassCheck.do
+   method: POST
+   headers:
+      Host: service.zj.10086.cn
+      Upgrade-Insecure-Requests: 1
+      Content-Type: application/x-www-form-urlencoded
+      User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+      Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8   
+   postBody: validateCode=${code}&bid=BC5CC0A69BC10482E044001635842132   
+   verifyCodeUrl:
+      name: call-detail-send-sms
+      url: http://service.zj.10086.cn/yw/detail/secondPassCheck.do
+      method: POST
+      headers:
+        Host: service.zj.10086.cn
+        Upgrade-Insecure-Requests: 1
+        Content-Type: application/x-www-form-urlencoded
+        User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+        Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8 
+      postBody: validateCode=&bid=BC5CC0A69BC10482E044001635842132  
+      goal: FOR_SMS
+   expects:
+    -
+     type: contains
+     content: "12"
+   errors:
+    -
+     type: contains
+     content: "3"
+     note: 短信验证码输入错误，重新数据该验证码
